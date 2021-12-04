@@ -1,5 +1,5 @@
-#ifndef CHIP8_SRC_RENDERING_RENDER_THREAD_H_
-#define CHIP8_SRC_RENDERING_RENDER_THREAD_H_
+#ifndef CHIP8_SRC_RENDERING_RENDER_CONTEXT_H_
+#define CHIP8_SRC_RENDERING_RENDER_CONTEXT_H_
 
 #include <vulkan/vulkan.hpp>
 
@@ -9,19 +9,19 @@
 #include "display.h"
 
 namespace CHIP8 {
-class RenderThread {
+class RenderContext {
  public:
-  RenderThread(const GraphicalDevice &graphical_device,
-               const PipelineAttachments &pipeline_attachments,
-               const Pipeline &pipeline,
-               const Swapchain &swapchain);
+  RenderContext(const GraphicalDevice &graphical_device,
+                const PipelineAttachments &pipeline_attachments,
+                const Pipeline &pipeline,
+                const Swapchain &swapchain);
 
-  ~RenderThread();
+  ~RenderContext();
 
   void Render();
 
-  RenderThread(const RenderThread &other) = delete;
-  RenderThread& operator=(const RenderThread &other) = delete;
+  RenderContext(const RenderContext &other) = delete;
+  RenderContext& operator=(const RenderContext &other) = delete;
  private:
   vk::CommandPool command_pool_;
   vk::CommandBuffer command_buffer_;
@@ -36,4 +36,4 @@ class RenderThread {
 };
 }
 
-#endif //CHIP8_SRC_RENDERING_RENDER_THREAD_H_
+#endif //CHIP8_SRC_RENDERING_RENDER_CONTEXT_H_

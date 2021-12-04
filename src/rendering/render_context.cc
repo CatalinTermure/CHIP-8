@@ -1,13 +1,13 @@
-#include "render_thread.h"
+#include "render_context.h"
 
 #include <vulkan/vulkan.hpp>
 
 #include "swapchain.h"
 
-CHIP8::RenderThread::RenderThread(const GraphicalDevice &graphical_device,
-                                  const CHIP8::PipelineAttachments &pipeline_attachments,
-                                  const CHIP8::Pipeline &pipeline,
-                                  const CHIP8::Swapchain &swapchain) {
+CHIP8::RenderContext::RenderContext(const GraphicalDevice &graphical_device,
+                                    const CHIP8::PipelineAttachments &pipeline_attachments,
+                                    const CHIP8::Pipeline &pipeline,
+                                    const CHIP8::Swapchain &swapchain) {
   logical_device_ = graphical_device.device();
   graphics_queue_ = graphical_device.graphics_queue();
   pipeline_attachments_ = &pipeline_attachments;
@@ -26,13 +26,13 @@ CHIP8::RenderThread::RenderThread(const GraphicalDevice &graphical_device,
   image_released_semaphore_ = graphical_device.device().createSemaphore(vk::SemaphoreCreateInfo{});
 }
 
-CHIP8::RenderThread::~RenderThread() {
+CHIP8::RenderContext::~RenderContext() {
   logical_device_.destroySemaphore(acquire_image_semaphore_);
   logical_device_.destroySemaphore(image_released_semaphore_);
   logical_device_.destroyCommandPool(command_pool_);
 }
 
-void CHIP8::RenderThread::Render() {
+void CHIP8::RenderContext::Render() {
   vk::Extent2D swapchain_extent = swapchain_->image_extent();
   logical_device_.resetCommandPool(command_pool_);
   SwapchainImage swapchain_image = swapchain_->AcquireNextImage(acquire_image_semaphore_);

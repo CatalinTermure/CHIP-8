@@ -1,26 +1,23 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
-#include <SDL_vulkan.h>
 #undef main
 
-#include <iostream>
 #include <filesystem>
-#include <algorithm>
-#include <optional>
-#include <fstream>
-
-#include <vulkan/vulkan.hpp>
+#include <iostream>
 
 #include "rendering/window.h"
 #include "rendering/graphical_device.h"
 #include "rendering/pipeline_attachments.h"
 #include "rendering/swapchain.h"
 #include "rendering/pipeline.h"
-#include "rendering/render_thread.h"
+#include "rendering/render_context.h"
+#include "hardware/device.h"
+#include "instructions/program.h"
+#include "instructions/execution_thread.h"
 
-const int kWindowWidth = 1080;
-const int kWindowHeight = 800;
-constexpr const char kAppName[] = "CHIP-8 Interpreter";
+constexpr int kWindowWidth = 1080;
+constexpr int kWindowHeight = 800;
+constexpr char kAppName[] = "CHIP-8 Interpreter";
 
 int main(int, char **) {
   CHIP8::Window window{kAppName, kWindowWidth, kWindowHeight};
@@ -28,23 +25,27 @@ int main(int, char **) {
   CHIP8::PipelineAttachments pipeline_attachments{window, graphical_device};
   CHIP8::Swapchain swapchain{window, graphical_device, pipeline_attachments};
   CHIP8::Pipeline pipeline{window, graphical_device, pipeline_attachments};
-  CHIP8::RenderThread render_thread{graphical_device, pipeline_attachments, pipeline, swapchain};
+  CHIP8::RenderContext render_context{graphical_device, pipeline_attachments, pipeline, swapchain};
+
+  CHIP8::Device device{};
+  CHIP8::Program
+      testing_program{std::filesystem::current_path().parent_path() / "programs" / "testing" / "register-loading.ch8"};
+
+  CHIP8::ExecutionThread{device, testing_program, false};
 
   SDL_Event sdl_event;
 
   bool should_window_close = false;
 
   while (!should_window_close) {
-    while (SDL_PollEvent(&sdl_event)) {
+    if (SDL_WaitEvent(&sdl_event)) {
       switch (sdl_event.type) {
         case SDL_QUIT: should_window_close = true;
           break;
       }
     }
 
-    if (should_window_close) break;
-
-    render_thread.Render();
+    render_context.Render();
   }
   return 0;
 }

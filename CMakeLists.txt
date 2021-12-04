@@ -27,7 +27,43 @@ endforeach ()
 
 add_custom_target(shaders ALL DEPENDS ${SPV_SHADERS})
 
-add_executable(CHIP8 src/main.cc src/debug_messenger.h src/rendering/graphical_device.cc src/rendering/graphical_device.h src/rendering/window.cc src/rendering/window.h src/rendering/swapchain.cc src/rendering/swapchain.h src/rendering/pipeline_attachments.cc src/rendering/pipeline_attachments.h src/rendering/pipeline.cc src/rendering/pipeline.h src/rendering/render_thread.cc src/rendering/render_thread.h src/rendering/display.h)
+set(SOURCE_FILES
+        src/main.cc
+        src/rendering/graphical_device.cc
+        src/rendering/pipeline.cc
+        src/rendering/pipeline_attachments.cc
+        src/rendering/render_context.cc
+        src/rendering/swapchain.cc
+        src/rendering/window.cc
+        src/instructions/execution_thread.cc
+        src/instructions/program.cc
+        src/hardware/device.cc
+        src/hardware/keyboard.cc
+        src/hardware/registers.cc
+        src/hardware/stack.cc
+        src/hardware/timer.cc
+        )
+
+set(HEADER_FILES
+        src/debug_messenger.h
+        src/rendering/display.h
+        src/rendering/graphical_device.h
+        src/rendering/pipeline.h
+        src/rendering/pipeline_attachments.h
+        src/rendering/render_context.h
+        src/rendering/swapchain.h
+        src/rendering/window.h
+        src/instructions/execution_thread.h
+        src/instructions/program.h
+        src/hardware/memory.h
+        src/hardware/device.h
+        src/hardware/keyboard.h
+        src/hardware/registers.h
+        src/hardware/stack.h
+        src/hardware/timer.h
+        )
+
+add_executable(CHIP8 ${SOURCE_FILES} ${HEADER_FILES})
 
 target_include_directories(
         CHIP8

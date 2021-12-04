@@ -9,10 +9,10 @@ This project was made with the goal of getting familiar with Vulkan, CPU and GPU
 
 # Status & usage
 
-Currently, the project is in a WIP state, as described below:
-* Rendering <-- mostly done, see TODOs
-* Instruction reading and memory model
-* Instruction execution
+The project is in a WIP state, as described below:
+* Rendering - mostly done
+* Instruction reading and memory model - done
+* Instruction execution <------ 50% of instructions done
 * Sound (tentative)
 
 Currently, you cannot interact with the app in any way.
