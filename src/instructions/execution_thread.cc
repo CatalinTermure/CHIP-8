@@ -97,9 +97,13 @@ static void ExecuteProgram(CHIP8::Device &device, CHIP8::Program &program) {
                               device.registers().v[register_x_index],
                               device.registers().v[register_y_index]);
     } else if ((instruction & 0xEF9E) == instruction) { // SKP Vx
-      //
+      if (device.keyboard().IsPressed(register_x_index)) {
+        program.GetNextInstruction();
+      }
     } else if ((instruction & 0xEFA1) == instruction) { // SKNP Vx
-      //
+      if (!device.keyboard().IsPressed(register_x_index)) {
+        program.GetNextInstruction();
+      }
     } else if ((instruction & 0xFF07) == instruction) { // LD Vx, DT
       //
     } else if ((instruction & 0xFF0A) == instruction) { // LD Vx, Key

@@ -42,6 +42,12 @@ int main(int, char **) {
       switch (sdl_event.type) {
         case SDL_QUIT: should_window_close = true;
           break;
+        case SDL_KEYDOWN:
+          device.keyboard().HandleKeyDown(static_cast<SDL_KeyCode>(sdl_event.key.keysym.sym));
+          break;
+        case SDL_KEYUP:
+          device.keyboard().HandleKeyUp(static_cast<SDL_KeyCode>(sdl_event.key.keysym.sym));
+          break;
       }
     }
 

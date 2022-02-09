@@ -32,4 +32,5 @@ CHIP8::Device::Device() : kSdlRenderEventType(SDL_RegisterEvents(1)) {
   registers_ = std::make_unique<Registers>();
   call_stack_ = std::make_unique<Stack>();
   display_ = std::make_unique<Display>();
+  keyboard_ = std::make_unique<Keyboard>();
 }
